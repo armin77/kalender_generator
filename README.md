@@ -1,4 +1,4 @@
-# kalender_generator
+# Kalender Generator
 Einen druckbaren Jahreskalender als PDF erstellen.
 * jeweils 2 Seiten pro Tag (links / rechts)
 * Samstag und Sonntag nebeneinander
