@@ -1,6 +1,6 @@
 node_modules
 vorlagen
 
-HelveticaNeueLTStd-ThCn.otf
+*.otf
 *.pdf
 package-lock.json
