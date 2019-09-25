@@ -1,6 +1,6 @@
 {
   "startDatum": "2019-12-23",
-  "endDatum": "2021-02-28",
+  "endDatum": "2019-12-30",
   "formatDatum": "dddd, DD. MMMM",
   "feiertage": [
     { "titel": "Neujahr", "datum": "2020-01-01" },
