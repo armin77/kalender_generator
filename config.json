@@ -38,7 +38,7 @@
     { "titel": "Osterferien", "von": "2020-04-14", "bis": "2020-04-24" },
     { "titel": "Sommerferien", "von": "2020-07-06", "bis": "2020-08-14" },
     { "titel": "Herbstferien", "von": "2020-10-12", "bis": "2020-10-23" },
-    { "titel": "Weihnachtsferien", "von": "2020-12-21", "bis": "2020-12-31" }
+    { "titel": "Weihnachtsferien", "von": "2020-12-21", "bis": "2020-12-31" },
     { "titel": "Winterferien", "von": "2021-02-15", "bis": "2021-02-19" }
   ]
 }
