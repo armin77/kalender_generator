@@ -1,110 +1,211 @@
-let _      = require('underscore');
+let _ = require('underscore');
 let moment = require('moment');
 
 module.exports = (doc, config) => {
-
   return {
     // linke Seite für einen normalen Wochentag
-    linkeSeite: (datum) => {
+    linkeSeite: datum => {
       // Linke Seite Wochentag
       doc.addPage({
         size: 'A4',
-        margins: {top: 20, bottom: 20, left: 20, right: 20}
+        margins: { top: 20, bottom: 20, left: 20, right: 20 }
       });
 
-      doc.fontSize(28)
-        .text(datum.format(config.formatDatum), {
-          align: 'left'
-        });
+      let von = datum.clone();
+      let bis = datum.clone().add(6, 'days');
+      von = von.isSame(bis, 'month') ? von.format('DD.') : von.format('DD. MMMM');
 
-      subtitel(datum, 'left');
-
-      // Titel-Linie
-      doc.moveTo(20,69.4)
-        .lineTo(576, 69.4)
-        .stroke('#000');
-
-      let delta = 28;
-      let uhrzeit = 7;
-      for(let i = 0; i<=25; i++) {
-        doc.moveTo(20,100 + i*delta).lineTo(556, 100 + i*delta).stroke('#ccc');
-
-        let tmp = (i % 2 == 0) ? (uhrzeit + ":00") : ((uhrzeit++) + ":30");
-        tmp = (tmp.length < 5) ? "0"+tmp : tmp;
-
-        doc.fontSize(14).fillColor( (i % 2 == 0) ? '#000' : '#aaa' ).text(tmp, 20, 100-14 + i*delta)
-      }
-    },
-
-    // rechte Seite für einen Sonntag
-    rechteSeiteSonntag: (datum) => {
-      // Linke Seite Wochentag
-      doc.addPage({
-        size: 'A4',
-        margins: {top: 20, bottom: 20, left: 20, right: 20}
-      });
-
-      doc.fontSize(28)
-        .text(datum.format(config.formatDatum), {
-          align: 'right'
-        });
-
-      subtitel(datum, 'right');
+      titel(`Woche vom ${von} bis ${bis.format('DD. MMMM')}`, { align: 'left' });
 
       // Titel-Linie
-      doc.moveTo(20,69.4)
-        .lineTo(576, 69.4)
+      doc
+        .moveTo(20, 49.4)
+        .lineTo(576, 49.4)
         .stroke('#000');
 
-      let delta = 28;
-      let uhrzeit = 7;
-      for(let i = 0; i<=25; i++) {
-        doc.moveTo(40,100 + i*delta).lineTo(576, 100 + i*delta).stroke('#bbb');
+      delta = 250;
+      for (let i = 0; i < 3; i++) {
+        const date = datum.clone().add(i, 'days');
 
-        let tmp = (i % 2 == 0) ? (uhrzeit + ":00") : ((uhrzeit++) + ":30");
-        tmp = (tmp.length < 5) ? "0"+tmp : tmp;
+        // Kasten
+        doc.rect(20, 60 + i * delta, 556, delta).stroke('#000');
+        doc
+          .moveTo(20, 100 + i * delta)
+          .lineTo(576, 100 + i * delta)
+          .stroke('#666');
 
-        doc.fontSize(14).fillColor( (i % 2 == 0) ? '#000' : '#aaa' ).text(tmp, 20, 100-14 + i*delta, {align: 'right'})
+        // Tagesdatum
+        const txt = date.format('dddd, DD.MMMM');
+        doc
+          .font('bold')
+          .fontSize(16)
+          .fillColor('black')
+          .text(txt, 25, 65 + i * delta, {
+            width: 556 - 10,
+            align: 'left'
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: 'left' });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 8; j++) {
+          doc
+            .moveTo(20, 101 + i * delta + j * delta2)
+            .lineTo(576, 101 + i * delta + j * delta2)
+            .stroke('#bbb');
+        }
       }
     },
 
     // Standard rechte Seite für normalen Wochentag
-    rechteSeite: (datum) => {
-
+    rechteSeite: datum => {
       // Rechte Seite Wochentag
       doc.addPage({
         size: 'A4',
-        margins: {top: 20, bottom: 20, left: 20, right: 20}
+        margins: { top: 20, bottom: 20, left: 20, right: 20 }
       });
 
-      doc.fontSize(28)
-        .text(datum.format(config.formatDatum), {
-          align: 'right'
-        });
-
-      subtitel(datum, 'right');
+      const wo = datum.clone().format('wo');
+      const yr = datum.clone().format('YYYY');
+      titel(`${wo} Kalenderwoche ${yr}`, {
+        align: 'right'
+      });
 
       // Titel-Linie
-      doc.moveTo(20,69.4)
-        .lineTo(576, 69.4)
+      doc
+        .moveTo(20, 49.4)
+        .lineTo(576, 49.4)
         .stroke('#000');
 
-      let delta = 28;
-      for(let i = 0; i<=25; i++) {
-        doc.moveTo(40,100 + i*delta).lineTo(576, 100 + i*delta).stroke('#bbb');
+      // Donnerstag + Freitag
+      delta = 250;
+      for (let i = 0; i < 2; i++) {
+        const date = datum.clone().add(i, 'days');
+
+        // Kasten
+        doc.rect(20, 60 + i * delta, 556, delta).stroke('#000');
+        // Linie unter Datum
+        doc
+          .moveTo(20, 100 + i * delta)
+          .lineTo(576, 100 + i * delta)
+          .stroke('#666');
+
+        // Tagesdatum
+        const txt = date.format('dddd, DD.MMMM');
+        doc
+          .font('bold')
+          .fontSize(16)
+          .fillColor('black')
+          .text(txt, 25, 65 + i * delta, {
+            width: 556 - 10,
+            align: 'right'
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: 'right' });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 8; j++) {
+          doc
+            .moveTo(20, 101 + i * delta + j * delta2)
+            .lineTo(576, 101 + i * delta + j * delta2)
+            .stroke('#bbb');
+        }
       }
 
-      delta = 5*delta;
-      for(let i = 0; i<5; i++) {
-        doc.rect(40, 100 + i*delta, 536/2, delta).stroke('#000');
-        doc.rect(308, 100 + i*delta, 536/2, delta).stroke('#000');
+      // SAMSTAG
+      {
+        let i = 2;
+        const date = datum.clone().add(2, 'days');
+
+        // Kasten
+        doc.rect(20, 60 + i * delta, 556 / 2, delta).stroke('#000');
+        // Linie unter Datum
+        doc
+          .moveTo(20, 100 + i * delta)
+          .lineTo(576 / 2 + 10, 100 + i * delta)
+          .stroke('#666');
+
+        // Tagesdatum
+        const txt = date.format('dddd, DD.MMMM');
+        doc
+          .font('bold')
+          .fontSize(16)
+          .fillColor('black')
+          .text(txt, 25, 65 + i * delta, {
+            width: 556 / 2 - 10,
+            align: 'left'
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: 'left' });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 8; j++) {
+          doc
+            .moveTo(20, 101 + i * delta + j * delta2)
+            .lineTo(576 / 2 + 10, 101 + i * delta + j * delta2)
+            .stroke('#bbb');
+        }
       }
-    },
+
+      // SONNTAG
+      {
+        let i = 2;
+        const date = datum.clone().add(3, 'days');
+
+        // Kasten
+        doc.rect(576 / 2 + 10, 60 + i * delta, 556 / 2, delta).stroke('#000');
+        // Linie unter Datum
+        doc
+          .moveTo(576 / 2 + 10, 100 + i * delta)
+          .lineTo(576, 100 + i * delta)
+          .stroke('#666');
+
+        // Tagesdatum
+        const txt = date.format('dddd, DD.MMMM');
+        doc
+          .font('bold')
+          .fillColor('black')
+          .fontSize(16)
+          .text(txt, 556 / 2 + 20, 65 + i * delta, {
+            width: 556 / 2 - 5,
+            align: 'right'
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: 'right', width: 556 / 2 - 5 });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 8; j++) {
+          doc
+            .moveTo(576 / 2 + 10, 101 + i * delta + j * delta2)
+            .lineTo(576, 101 + i * delta + j * delta2)
+            .stroke('#bbb');
+        }
+      }
+    }
+  };
+
+  // Wenn Ferientag oder Feiertag, dann Untertitel anzeigen
+  function titel(title, params) {
+    doc
+      .font('default')
+      .fontSize(28)
+      .fillColor('black')
+      .text(title, {
+        ...params
+      });
   }
 
   // Wenn Ferientag oder Feiertag, dann Untertitel anzeigen
-  function subtitel(datum, align) {
-    let subtitel = "";
+  function subtitel(datum, params) {
+    let subtitel = '';
 
     let feiertag = isFeiertag(datum);
     let ferientag = isFerientag(datum);
@@ -114,18 +215,24 @@ module.exports = (doc, config) => {
     }
 
     if (ferientag) {
-      if (feiertag) subtitel += " ";
-      subtitel += "(" + ferientag.titel + ")";
+      if (feiertag) subtitel += ' ';
+      subtitel += '(' + ferientag.titel + ')';
     }
 
-    doc.fontSize(17).text(subtitel, {align});
+    doc
+      .font('bold')
+      .fontSize(14)
+      .fillColor('red')
+      .text(subtitel, { width: 556 - 10, ...params });
   }
 
   // Prüfen, ob Datum ein Feiertag ist
   function isFeiertag(datum) {
     let found = false;
     _(config.feiertage).each(d => {
-      if (datum.isSame(d.datum, 'day')) { found = d; }
+      if (datum.isSame(d.datum, 'day')) {
+        found = d;
+      }
     });
 
     return found;
@@ -135,9 +242,11 @@ module.exports = (doc, config) => {
   function isFerientag(datum) {
     let found = false;
     _(config.ferien).each(d => {
-      if (datum.isBetween(d.von, d.bis, null, '[]')) { found = d; }
+      if (datum.isBetween(d.von, d.bis, null, '[]')) {
+        found = d;
+      }
     });
 
     return found;
   }
-}
+};
