@@ -66,16 +66,17 @@ module.exports = (doc, config) => {
           .stroke("#bbb");
       }
     },
+
     // linke Seite für einen normalen Wochentag
-    linkeSeite: datum => {
+    linkeSeite1: (datum, woche) => {
       // Linke Seite Wochentag
       doc.addPage({
         size: "A4",
         margins: { top: 20, bottom: 20, left: 20, right: 20 }
       });
 
-      let von = datum.clone();
-      let bis = datum.clone().add(6, "days");
+      let von = woche.clone();
+      let bis = woche.clone().add(6, "days");
       von = von.isSame(bis, "month")
         ? von.format("DD.")
         : von.format("DD. MMMM");
@@ -126,16 +127,206 @@ module.exports = (doc, config) => {
       }
     },
 
+    linkeSeite2: (datum, woche) => {
+      // Linke Seite Wochentag für Herzkatheter
+      doc.addPage({
+        size: "A4",
+        margins: { top: 20, bottom: 20, left: 20, right: 20 }
+      });
+
+      let von = woche.clone();
+      let bis = woche.clone().add(6, "days");
+      von = von.isSame(bis, "month")
+        ? von.format("DD.")
+        : von.format("DD. MMMM");
+
+      titel(`Woche vom ${von} bis ${bis.format("DD. MMMM")}`, {
+        align: "left"
+      });
+
+      // Titel-Linie
+      doc
+        .moveTo(20, 49.4)
+        .lineTo(576, 49.4)
+        .stroke("#000");
+
+      delta = 250;
+      for (let i = 0; i < 3; i++) {
+        const date = datum.clone().add(i, "days");
+
+        // Kasten
+        doc.rect(20, 60 + i * delta, 556, delta).stroke("#000");
+        doc
+          .moveTo(20, 100 + i * delta)
+          .lineTo(576, 100 + i * delta)
+          .stroke("#666");
+
+        // Tagesdatum
+        const txt = date.format("dddd, DD.MMMM");
+        doc
+          .font("bold")
+          .fontSize(16)
+          .fillColor("black")
+          .text(txt, 25, 65 + i * delta, {
+            width: 556 - 10,
+            align: "left"
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: "left" });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 8; j++) {
+          doc
+            .moveTo(20, 101 + i * delta + j * delta2)
+            .lineTo(576, 101 + i * delta + j * delta2)
+            .stroke("#bbb");
+        }
+      }
+      // SAMSTAG
+      {
+        let i = 2;
+        const date = datum.clone().add(2, "days");
+
+        // Kasten
+        doc.rect(20, 60 + i * delta, 556 / 2, delta).stroke("#000");
+        // Linie unter Datum
+        doc
+          .moveTo(20, 100 + i * delta)
+          .lineTo(576 / 2 + 10, 100 + i * delta)
+          .stroke("#666");
+
+        // Tagesdatum
+        const txt = date.format("dddd, DD.MMMM");
+        doc
+          .font("bold")
+          .fontSize(16)
+          .fillColor("black")
+          .text(txt, 25, 65 + i * delta, {
+            width: 556 / 2 - 10,
+            align: "left"
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: "left" });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 8; j++) {
+          doc
+            .moveTo(20, 101 + i * delta + j * delta2)
+            .lineTo(576 / 2 + 10, 101 + i * delta + j * delta2)
+            .stroke("#bbb");
+        }
+      }
+
+      // SONNTAG
+      {
+        let i = 2;
+        const date = datum.clone().add(3, "days");
+
+        // Kasten
+        doc.rect(576 / 2 + 10, 60 + i * delta, 556 / 2, delta).stroke("#000");
+        // Linie unter Datum
+        doc
+          .moveTo(576 / 2 + 10, 100 + i * delta)
+          .lineTo(576, 100 + i * delta)
+          .stroke("#666");
+
+        // Tagesdatum
+        const txt = date.format("dddd, DD.MMMM");
+        doc
+          .font("bold")
+          .fillColor("black")
+          .fontSize(16)
+          .text(txt, 556 / 2 + 20, 65 + i * delta, {
+            width: 556 / 2 - 5,
+            align: "right"
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: "right", width: 556 / 2 - 5 });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 8; j++) {
+          doc
+            .moveTo(576 / 2 + 10, 101 + i * delta + j * delta2)
+            .lineTo(576, 101 + i * delta + j * delta2)
+            .stroke("#bbb");
+        }
+      }
+    },
+
     // Standard rechte Seite für normalen Wochentag
-    rechteSeite: datum => {
+    rechteSeite1: (datum, woche) => {
       // Rechte Seite Wochentag
       doc.addPage({
         size: "A4",
         margins: { top: 20, bottom: 20, left: 20, right: 20 }
       });
 
-      const wo = datum.clone().format("wo");
-      const yr = datum.clone().format("YYYY");
+      const wo = woche.clone().format("wo");
+      const yr = woche.clone().format("gggg");
+      titel(`${wo} Kalenderwoche ${yr}`, {
+        align: "right"
+      });
+
+      // Titel-Linie
+      doc
+        .moveTo(20, 49.4)
+        .lineTo(576, 49.4)
+        .stroke("#000");
+
+      // Donnerstag + Freitag
+      delta = 250;
+      for (let i = 0; i < 3; i++) {
+        const date = datum.clone().add(i, "days");
+
+        // Kasten
+        doc.rect(20, 60 + i * delta, 556, delta).stroke("#000");
+        // Linie unter Datum
+        doc
+          .moveTo(20, 100 + i * delta)
+          .lineTo(576, 100 + i * delta)
+          .stroke("#666");
+
+        // Tagesdatum
+        const txt = date.format("dddd, DD.MMMM");
+        doc
+          .font("bold")
+          .fontSize(16)
+          .fillColor("black")
+          .text(txt, 25, 65 + i * delta, {
+            width: 556 - 10,
+            align: "right"
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: "right" });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 8; j++) {
+          doc
+            .moveTo(20, 101 + i * delta + j * delta2)
+            .lineTo(576, 101 + i * delta + j * delta2)
+            .stroke("#bbb");
+        }
+      }
+    },
+
+    // Standard rechte Seite für normalen Wochentag für Herzkatheter
+    rechteSeite2: (datum, woche) => {
+      // Rechte Seite Wochentag
+      doc.addPage({
+        size: "A4",
+        margins: { top: 20, bottom: 20, left: 20, right: 20 }
+      });
+
+      const wo = woche.clone().format("wo");
+      const yr = woche.clone().format("gggg");
       titel(`${wo} Kalenderwoche ${yr}`, {
         align: "right"
       });

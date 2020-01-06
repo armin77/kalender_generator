@@ -1,38 +1,45 @@
-let config = require('./config.json');
-let pdfkit = require('pdfkit');
-let fs = require('fs');
-let moment = require('moment');
+let config = require("./config.json");
+let pdfkit = require("pdfkit");
+let fs = require("fs");
+let moment = require("moment");
 
 // Datum auf Deutsch umstellen
-moment.locale('de');
+moment.locale("de");
 let lastLogStatus;
 
 // neues PDF-Dokument erstellen
 let doc = new pdfkit({ autoFirstPage: false });
 // Ausgabe in Datei umleiten
-doc.pipe(fs.createWriteStream('out.pdf'));
+doc.pipe(fs.createWriteStream("out.pdf"));
 
 // Erste leere eite, wg. Beidseitigem Ausdruck
-doc.addPage({ size: 'A4' });
+doc.addPage({ size: "A4" });
 
 // Schriftarten registrieren
-doc.registerFont('default', './HelveticaNeueLTStd-ThCn.otf');
-doc.registerFont('bold', './HelveticaNeueLTStd-MdCn.otf');
+doc.registerFont("default", "./HelveticaNeueLTStd-ThCn.otf");
+doc.registerFont("bold", "./HelveticaNeueLTStd-MdCn.otf");
 
 // Seiten-Funktionen einbinden
-let kalender = require('./functions')(doc, config);
+let kalender = require("./functions")(doc, config);
 
 // Startdatum setzen, und Jahr durchlaufen
 let datum = moment(config.startDatum);
+let woche = moment(config.startDatum);
 while (datum.isBefore(config.endDatum)) {
   // Montag + Dienstag + Mittwoch
-  kalender.linkeSeite(datum);
+  kalender.linkeSeite1(datum, woche);
+  // Montag + Dienstag + Mittwoch für Herzkatheter
+  kalender.rechteSeite1(datum, woche);
 
+  datum.add(3, "days");
   // Donnerstag + Freitag + Samtag/Sonntag
-  kalender.rechteSeite(datum.add(3, 'days'));
+  kalender.linkeSeite2(datum, woche);
+  // Donnerstag + Freitag + Samtag/Sonntag für Herzkatheter
+  kalender.rechteSeite2(datum, woche);
 
   // Nächste Woche
-  datum.add(4, 'days');
+  datum.add(4, "days");
+  woche.add(7, "days");
   logStatus(datum);
 }
 
@@ -40,8 +47,8 @@ while (datum.isBefore(config.endDatum)) {
 doc.end();
 
 function logStatus(datum) {
-  if (lastLogStatus == undefined || !lastLogStatus.isSame(datum, 'month')) {
+  if (lastLogStatus == undefined || !lastLogStatus.isSame(datum, "month")) {
     lastLogStatus = datum.clone();
-    console.log("generiere '" + datum.format('MMMM YYYY') + "'");
+    console.log("generiere '" + datum.format("MMMM YYYY") + "'");
   }
 }
