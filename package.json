@@ -1,6 +1,6 @@
 {
   "name": "kalender_generator",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Einen druckbaren Jahreskalender als PDF erstellen",
   "scripts": {
     "start": "node kalender.js"
