@@ -87,7 +87,7 @@ module.exports = (doc, config) => {
         const date = datum.clone().add(i, "days");
 
         // Kasten
-        doc.rect(20, 60 + i * delta, 556, delta).stroke("#000");
+        doc.rect(20, 60, 556, 3 * delta).stroke("#000");
         doc
           .moveTo(20, 100 + i * delta)
           .lineTo(576, 100 + i * delta)
@@ -109,7 +109,62 @@ module.exports = (doc, config) => {
 
         // Linien
         delta2 = 26;
-        for (let j = 1; j < 8; j++) {
+        for (let j = 1; j < 27; j++) {
+          doc
+            .moveTo(20, 101 + i * delta + j * delta2)
+            .lineTo(576, 101 + i * delta + j * delta2)
+            .stroke("#bbb");
+        }
+      }
+    },
+
+    // Standard rechte Seite für normalen Wochentag
+    rechteSeiteSingleDay: (datum, woche) => {
+      // Rechte Seite Wochentag
+      doc.addPage({
+        size: "A4",
+        margins: { top: 20, bottom: 20, left: 20, right: 20 },
+      });
+
+      const wo = woche.clone().format("wo");
+      const yr = woche.clone().format("gggg");
+      titel(`${wo} Kalenderwoche ${yr}`, {
+        align: "right",
+      });
+
+      // Titel-Linie
+      doc.moveTo(20, 49.4).lineTo(576, 49.4).stroke("#000");
+
+      // Donnerstag + Freitag
+      delta = 250;
+      for (let i = 0; i < 1; i++) {
+        const date = datum.clone().add(i, "days");
+
+        // Kasten
+        doc.rect(20, 60, 556, 3 * delta).stroke("#000");
+        // Linie unter Datum
+        doc
+          .moveTo(20, 100 + i * delta)
+          .lineTo(576, 100 + i * delta)
+          .stroke("#666");
+
+        // Tagesdatum
+        const txt = date.format("dddd, DD.MMMM");
+        doc
+          .font("bold")
+          .fontSize(16)
+          .fillColor("black")
+          .text(txt, 25, 65 + i * delta, {
+            width: 556 - 10,
+            align: "right",
+          });
+
+        // ggfs. Feiertage / Ferien
+        subtitel(date, { align: "right" });
+
+        // Linien
+        delta2 = 26;
+        for (let j = 1; j < 27; j++) {
           doc
             .moveTo(20, 101 + i * delta + j * delta2)
             .lineTo(576, 101 + i * delta + j * delta2)

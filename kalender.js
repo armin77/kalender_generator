@@ -26,19 +26,20 @@ let kalender = require("./functions")(doc, config);
 let datum = moment(config.startDatum);
 let woche = moment(config.startDatum);
 while (datum.isBefore(config.endDatum)) {
-  // Montag + Dienstag + Mittwoch
-  kalender.linkeSeite1(datum, woche);
-  // Montag + Dienstag + Mittwoch für Herzkatheter
-  kalender.rechteSeite1(datum, woche);
+  // Montag - Freitag
+  for (let i = 0; i < 5; i++) {
+    kalender.linkeSeiteSingleDay(datum, woche);
+    kalender.rechteSeiteSingleDay(datum, woche);
+    datum.add(1, "days");
+  }
 
-  datum.add(3, "days");
-  // Donnerstag + Freitag + Samtag/Sonntag
-  kalender.linkeSeite2(datum, woche);
-  // Donnerstag + Freitag + Samtag/Sonntag für Herzkatheter
-  kalender.rechteSeite2(datum, woche);
+  // Samstag + Sonntag
+  kalender.linkeSeiteSingleDay(datum, woche);
+  datum.add(1, "days");
+  kalender.rechteSeiteSingleDay(datum, woche);
+  datum.add(1, "days");
 
   // Nächste Woche
-  datum.add(4, "days");
   woche.add(7, "days");
   logStatus(datum);
 }
