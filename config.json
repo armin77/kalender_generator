@@ -1,16 +1,22 @@
 {
-  "startDatum": "2019-12-23",
-  "endDatum": "2021-02-28",
+  "startDatum": "2020-12-07",
+  "endDatum": "2022-03-05",
   "formatDatum": "dddd, DD. MMMM",
   "feiertage": [
     { "titel": "Neujahr", "datum": "2020-01-01" },
     { "titel": "Heilige Drei Könige (nur BW, BY, ST)", "datum": "2020-01-06" },
-    { "titel": "Internationaler Frauentag (nur Berlin)", "datum": "2020-03-08" },
+    {
+      "titel": "Internationaler Frauentag (nur Berlin)",
+      "datum": "2020-03-08"
+    },
     { "titel": "Karfreitag", "datum": "2020-04-10" },
     { "titel": "Ostersonntag", "datum": "2020-04-12" },
     { "titel": "Ostermontag", "datum": "2020-04-13" },
     { "titel": "Tag der Arbeit", "datum": "2020-05-01" },
-    { "titel": "Tag der Befreiung (einmalig nur Berlin)", "datum": "2020-05-08" },
+    {
+      "titel": "Tag der Befreiung (einmalig nur Berlin)",
+      "datum": "2020-05-08"
+    },
     { "titel": "Christi Himmelfahrt", "datum": "2020-05-21" },
     { "titel": "Pfingstsonntag", "datum": "2020-05-31" },
     { "titel": "Pfingstmontag", "datum": "2020-06-01" },
@@ -30,7 +36,71 @@
     },
     { "titel": "Buß- und Bettag (nur Sachsen)", "datum": "2020-11-18" },
     { "titel": "1. Weihnachtsfeiertag", "datum": "2020-12-25" },
-    { "titel": "2. Weihnachtsfeiertag", "datum": "2020-12-26" }
+    { "titel": "2. Weihnachtsfeiertag", "datum": "2020-12-26" },
+
+    { "titel": "Neujahr", "datum": "2021-01-01" },
+    { "titel": "Heilige Drei Könige (nur BW, BY, ST)", "datum": "2021-01-06" },
+    {
+      "titel": "Internationaler Frauentag (nur Berlin)",
+      "datum": "2021-03-08"
+    },
+    { "titel": "Karfreitag", "datum": "2021-04-02" },
+    { "titel": "Ostersonntag", "datum": "2021-04-04" },
+    { "titel": "Ostermontag", "datum": "2021-04-05" },
+    { "titel": "Tag der Arbeit", "datum": "2021-05-01" },
+    { "titel": "Christi Himmelfahrt", "datum": "2021-05-13" },
+    { "titel": "Pfingstsonntag", "datum": "2021-05-23" },
+    { "titel": "Pfingstmontag", "datum": "2021-05-24" },
+    {
+      "titel": "Fronleichnam (nur BW, BY, HE, NW, RP, SL)",
+      "datum": "2021-06-03"
+    },
+    { "titel": "Mariä Himmelfahrt (nur BY, SL)", "datum": "2021-08-15" },
+    { "titel": "Weltkindertag (einmalig nur TH)", "datum": "2021-09-20" },
+    { "titel": "Tag der Deutschen Einheit", "datum": "2021-10-03" },
+    {
+      "titel": "Reformationstag (nur BB, HB, HH, MV, NI, SN, ST, SH, TH)",
+      "datum": "2021-10-31"
+    },
+    {
+      "titel": "Allerheiligen (nur BW, BY, NW, RP, SL)",
+      "datum": "2021-11-01"
+    },
+    { "titel": "Buß- und Bettag (nur Sachsen)", "datum": "2021-11-17" },
+    { "titel": "1. Weihnachtsfeiertag", "datum": "2021-12-25" },
+    { "titel": "2. Weihnachtsfeiertag", "datum": "2021-12-26" },
+
+    { "titel": "Neujahr", "datum": "2022-01-01" },
+    { "titel": "Heilige Drei Könige (nur BW, BY, ST)", "datum": "2022-01-06" },
+    {
+      "titel": "Internationaler Frauentag (nur Berlin)",
+      "datum": "2022-03-08"
+    },
+    { "titel": "Karfreitag", "datum": "2022-04-15" },
+    { "titel": "Ostersonntag", "datum": "2022-04-17" },
+    { "titel": "Ostermontag", "datum": "2022-04-18" },
+    { "titel": "Tag der Arbeit", "datum": "2022-05-01" },
+    { "titel": "Christi Himmelfahrt", "datum": "2022-05-26" },
+    { "titel": "Pfingstsonntag", "datum": "2022-06-05" },
+    { "titel": "Pfingstmontag", "datum": "2022-06-06" },
+    {
+      "titel": "Fronleichnam (nur BW, BY, HE, NW, RP, SL)",
+      "datum": "2022-06-16"
+    },
+    { "titel": "Mariä Himmelfahrt (nur BY, SL)", "datum": "2022-08-15" },
+    { "titel": "Weltkindertag (nur TH)", "datum": "2022-09-20" },
+    { "titel": "Tag der Deutschen Einheit", "datum": "2022-10-03" },
+    {
+      "titel": "Reformationstag (nur BB, HB, HH, MV, NI, SN, ST, SH, TH)",
+      "datum": "2022-10-31"
+    },
+    {
+      "titel": "Allerheiligen (nur BW, BY, NW, RP, SL)",
+      "datum": "2022-11-01"
+    },
+    { "titel": "Buß- und Bettag (nur Sachsen)", "datum": "2022-11-16" },
+    { "titel": "1. Weihnachtsfeiertag", "datum": "2022-12-25" },
+    { "titel": "2. Weihnachtsfeiertag", "datum": "2022-12-26" }
   ],
   "ferien": [
     { "titel": "Weihnachtsferien", "von": "2019-12-23", "bis": "2020-01-03" },
@@ -39,6 +109,20 @@
     { "titel": "Sommerferien", "von": "2020-07-06", "bis": "2020-08-14" },
     { "titel": "Herbstferien", "von": "2020-10-12", "bis": "2020-10-23" },
     { "titel": "Weihnachtsferien", "von": "2020-12-21", "bis": "2020-12-31" },
-    { "titel": "Winterferien", "von": "2021-02-15", "bis": "2021-02-19" }
+
+    { "titel": "Winterferien", "von": "2021-02-15", "bis": "2021-02-19" },
+    { "titel": "Osterferien", "von": "2021-03-29", "bis": "2021-04-07" },
+    { "titel": "Pfingstferien", "von": "2021-05-25", "bis": "2021-05-28" },
+    { "titel": "Sommerferien", "von": "2021-07-19", "bis": "2021-08-27" },
+    { "titel": "Herbstferien", "von": "2021-10-18", "bis": "2021-10-29" },
+    { "titel": "Weihnachtsferien", "von": "2021-12-23", "bis": "2022-01-03" },
+    { "titel": "Winterferien", "von": "2022-02-21", "bis": "2022-03-01" },
+
+    { "titel": "Osterferien", "von": "2022-04-14", "bis": "2022-04-22" },
+    { "titel": "Pfingstferien", "von": "2022-06-07", "bis": "2022-06-10" },
+    { "titel": "Sommerferien", "von": "2022-07-25", "bis": "2022-09-02" },
+    { "titel": "Herbstferien", "von": "2022-10-24", "bis": "2022-11-04" },
+    { "titel": "Weihnachtsferien", "von": "2022-12-22", "bis": "2023-01-04" },
+    { "titel": "Winterferien", "von": "2023-02-20", "bis": "2023-02-24" }
   ]
 }
