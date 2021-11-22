@@ -12,6 +12,9 @@ let doc = new pdfkit({ autoFirstPage: false });
 // Ausgabe in Datei umleiten
 doc.pipe(fs.createWriteStream("out.pdf"));
 
+// Erste leere eite, wg. Beidseitigem Ausdruck
+doc.addPage({ size: "A4" });
+
 // Schriftarten registrieren
 doc.registerFont("default", "./HelveticaNeueLTStd-ThCn.otf");
 doc.registerFont("bold", "./HelveticaNeueLTStd-MdCn.otf");
@@ -21,12 +24,20 @@ let kalender = require("./functions")(doc, config);
 
 // Startdatum setzen, und Jahr durchlaufen
 let datum = moment(config.startDatum);
+let woche = moment(config.startDatum);
 while (datum.isBefore(config.endDatum)) {
-  // Tage nebeneinander auf einem Blatt
-  kalender.tischkalenderSeite(datum);
+  // Montag - Freitag
+  for (let i = 0; i < 5; i++) {
+    // linke Seite mit Mo, Di und Mi
+    kalender.linkeSeite1(datum, woche);
+    datum.add(3, "days");
+    // rechte Seite mit Do, Fr und Sa/So
+    kalender.rechteSeite2(datum, woche);
+    datum.add(4, "days");
+  }
 
   // Nächste Woche
-  datum.add(7, "days");
+  woche.add(7, "days");
   logStatus(datum);
 }
 
