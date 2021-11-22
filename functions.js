@@ -87,7 +87,7 @@ module.exports = (doc, config) => {
         const date = datum.clone().add(i, "days");
 
         // Kasten
-        doc.rect(20, 60, 556, 3 * delta).stroke("#000");
+        // doc.rect(20, 60, 556, 3 * delta).stroke("#000");
         doc
           .moveTo(20, 100 + i * delta)
           .lineTo(576, 100 + i * delta)
@@ -108,14 +108,53 @@ module.exports = (doc, config) => {
         subtitel(date, { align: "left" });
 
         // Linien
-        delta2 = 26;
-        for (let j = 1; j < 27; j++) {
+        delta2 = 28;
+        let uhrzeit = 7;
+
+        for (let i = 1; i <= 25; i++) {
           doc
-            .moveTo(20, 101 + i * delta + j * delta2)
-            .lineTo(576, 101 + i * delta + j * delta2)
-            .stroke("#bbb");
+            .moveTo(20, 100 + i * delta2)
+            .lineTo(556, 100 + i * delta2)
+            .stroke("#ccc");
+
+          let tmp = i % 2 == 0 ? uhrzeit + ":00" : uhrzeit++ + ":30";
+          tmp = tmp.length < 5 ? "0" + tmp : tmp;
+
+          doc
+            .fontSize(14)
+            .fillColor(i % 2 == 0 ? "#000" : "#aaa")
+            .text(tmp, 20, 100 - 14 + i * delta2);
         }
+
+        // for (let j = 1; j < 27; j++) {
+        //   doc
+        //     .moveTo(20, 101 + i * delta + j * delta2)
+        //     .lineTo(576, 101 + i * delta + j * delta2)
+        //     .stroke("#bbb");
+        // }
       }
+
+      // Durchgestrichen bei Feiertagen
+      if (isFeiertag(datum)) {
+        doc
+          .moveTo(20, 100)
+          .lineTo(576, 800)
+          .lineCap("round")
+          .lineWidth(15)
+          .strokeOpacity(0.5)
+          .stroke("#f00");
+      }
+
+      // Seitenstrich bei Ferientagen
+      // if (isFerientag(datum)) {
+      //   doc
+      //     .moveTo(576, 100)
+      //     .lineTo(576, 800)
+      //     .lineCap("round")
+      //     .lineWidth(15)
+      //     .strokeOpacity(0.5)
+      //     .stroke("#0f0");
+      // }
     },
 
     // Standard rechte Seite für normalen Wochentag
@@ -135,13 +174,12 @@ module.exports = (doc, config) => {
       // Titel-Linie
       doc.moveTo(20, 49.4).lineTo(576, 49.4).stroke("#000");
 
-      // Donnerstag + Freitag
       delta = 250;
       for (let i = 0; i < 1; i++) {
         const date = datum.clone().add(i, "days");
 
         // Kasten
-        doc.rect(20, 60, 556, 3 * delta).stroke("#000");
+        // doc.rect(20, 60, 556, 3 * delta).stroke("#000");
         // Linie unter Datum
         doc
           .moveTo(20, 100 + i * delta)
@@ -163,14 +201,52 @@ module.exports = (doc, config) => {
         subtitel(date, { align: "right" });
 
         // Linien
-        delta2 = 26;
-        for (let j = 1; j < 27; j++) {
+        delta2 = 28;
+        let uhrzeit = 7;
+        for (let i = 1; i <= 25; i++) {
           doc
-            .moveTo(20, 101 + i * delta + j * delta2)
-            .lineTo(576, 101 + i * delta + j * delta2)
-            .stroke("#bbb");
+            .moveTo(40, 100 + i * delta2)
+            .lineTo(576, 100 + i * delta2)
+            .stroke("#ccc");
+
+          let tmp = i % 2 == 0 ? uhrzeit + ":00" : uhrzeit++ + ":30";
+          tmp = tmp.length < 5 ? "0" + tmp : tmp;
+
+          doc
+            .fontSize(14)
+            .fillColor(i % 2 == 0 ? "#000" : "#aaa")
+            .text(tmp, 20, 100 - 14 + i * delta2, { align: "right" });
         }
+        // delta2 = 26;
+        // for (let j = 1; j < 27; j++) {
+        //   doc
+        //     .moveTo(20, 101 + i * delta + j * delta2)
+        //     .lineTo(576, 101 + i * delta + j * delta2)
+        //     .stroke("#bbb");
+        // }
       }
+
+      // Durchgestrichen bei Feiertagen
+      if (isFeiertag(datum)) {
+        doc
+          .moveTo(576, 100)
+          .lineTo(20, 800)
+          .lineCap("round")
+          .lineWidth(15)
+          .strokeOpacity(0.5)
+          .stroke("#f00");
+      }
+
+      // Seitenstrich bei Ferientagen
+      // if (isFerientag(datum)) {
+      //   doc
+      //     .moveTo(20, 100)
+      //     .lineTo(20, 800)
+      //     .lineCap("round")
+      //     .lineWidth(15)
+      //     .strokeOpacity(0.5)
+      //     .stroke("#0f0");
+      // }
     },
 
     // linke Seite für drei Wochentag2
@@ -576,6 +652,17 @@ module.exports = (doc, config) => {
       .fontSize(params.fontSize || 14)
       .fillColor("red")
       .text(subtitel, { width: 556 - 10, ...params });
+    // doc
+    //   .font("bold")
+    //   .fontSize(params.fontSize || 14)
+    //   .fillColor("red")
+    //   .text(feiertag.titel, { width: 556 - 10, continued: true, ...params })
+    //   .fillColor("blue")
+    //   .text(" (" + ferientag.titel + ")", {
+    //     width: 556 - 10,
+    //     continued: true,
+    //     ...params,
+    //   });
   }
 
   // Prüfen, ob Datum ein Feiertag ist
