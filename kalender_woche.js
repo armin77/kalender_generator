@@ -27,14 +27,14 @@ let datum = moment(config.startDatum);
 let woche = moment(config.startDatum);
 while (datum.isBefore(config.endDatum)) {
   // Montag - Freitag
-  for (let i = 0; i < 5; i++) {
-    // linke Seite mit Mo, Di und Mi
-    kalender.linkeSeite1(datum, woche);
-    datum.add(3, "days");
-    // rechte Seite mit Do, Fr und Sa/So
-    kalender.rechteSeite2(datum, woche);
-    datum.add(4, "days");
-  }
+  // for (let i = 0; i < 5; i++) {
+  // linke Seite mit Mo, Di und Mi
+  kalender.linkeSeite1(datum, woche);
+  datum.add(3, "days");
+  // rechte Seite mit Do, Fr und Sa/So
+  kalender.rechteSeite2(datum, woche);
+  datum.add(4, "days");
+  // }
 
   // Nächste Woche
   woche.add(7, "days");
